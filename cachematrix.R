@@ -8,7 +8,7 @@
 
 makeCacheMatrix <- function(x = matrix()) 
 {
-  invM <- NULL # initialise the matrix inverse internal to the
+  invM <- NULL # initialise the matrix inverse internal to this function
   
   # method to set or initialise underlying matrix from outside the defining environment
   set <- function(y)
@@ -38,15 +38,22 @@ makeCacheMatrix <- function(x = matrix())
 # if this matrix is unchanged, and its inverse already calculated, then retrieve this existing inverse matrix object from the cache
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+  
+  ## Return a matrix that is the inverse of 'x'
   inv <- x$getInverse()
-  if(!is.null(inv)) { # does the inverese already exist? if so get it
+  
+  # does the inverese already exist? if so get it
+  if(!is.null(inv)) { 
     message("getting cached data")
     return(inv) # return the inverse matrix
   }
+  
   # mean not exist; so get numeric vector using makeCacheMatrix.get
   data <- x$get() 
+  
   inv <- solve(data, ...) # determine the inverse of data = a matrix
+  
   x$setInv(inv) # set it in the makeCacheMatrix object
+  
   inv # return the inverse matrix; same as return(inv)
 }
